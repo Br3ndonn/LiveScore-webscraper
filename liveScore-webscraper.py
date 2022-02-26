@@ -33,13 +33,13 @@ for div in soup.find(class_='MatchRows_root__1NKae'):
         lista.append(dados.copy())
 
 # SALVA A LISTA DE DICIONÁRIOS COMO STR EM UM ARQUIVO .txt SE O DICIONÁRIO NÃO ESTIVER VAZIO
-with open('tabela' + str(tomorrows_date) + '.txt', 'w') as arquivo:
+with open('tabela' + str(tomorrows_date) + '.txt', 'w', encoding="utf-8") as arquivo:
     for valor in lista:
         if bool(valor):
             arquivo.write(str(valor.values())+'\n')
 
 # ABRE O ARQUIVO .txt E REMOVE OS CARACTERES EXCEDENTES PARA FICAR NO LIMITE DE 1600 CARACTERES DO TWILIO
-with open('tabela' + str(tomorrows_date) + '.txt', 'r') as arquivo2:
+with open('tabela' + str(tomorrows_date) + '.txt', 'r', encoding="utf-8") as arquivo2:
     data = arquivo2.read()
     # LISTA DE CARACTERES A SEREM REMOVIDOS
     caracteres_a_remover = ['dict_values([', '])']
