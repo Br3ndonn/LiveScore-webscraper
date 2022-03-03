@@ -18,7 +18,7 @@ soup = BeautifulSoup(site.content, 'html.parser')
 # PERCORRE O CÓDIGO HTML EM BUSCA DOS ELEMENTOS DESEJADOS
 
 for div in soup.find(class_='MatchRows_root__1NKae'):
-    for jo0gos in div.find_all('div'):
+    for jogos in div.find_all('div'):
 # PERCORRE AS DIV COLETANDO OS HORÁRIOS, MANDANTE DO JOGO E TIME VISITANTE
 # SE A DIV NÃO ESTIVER VAZIA, O ELEMENTO É SALVO EM UM DICIONÁRIO E SALVA O DICIONÁRIO EM UMA LISTA PARA QUE POSSAMOS PEGAR OS DEMAIS VALORES
         dados.clear()
