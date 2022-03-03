@@ -16,9 +16,9 @@ site = requests.get(next_day_url)
 soup = BeautifulSoup(site.content, 'html.parser')
 
 # PERCORRE O CÓDIGO HTML EM BUSCA DOS ELEMENTOS DESEJADOS
-content = soup.find_all(class_='MatchRow_footballRoot__1S4eG MatchRow_isHighlighted__397Dm')
+
 for div in soup.find(class_='MatchRows_root__1NKae'):
-    for jogos in div.find_all('div'):
+    for jo0gos in div.find_all('div'):
 # PERCORRE AS DIV COLETANDO OS HORÁRIOS, MANDANTE DO JOGO E TIME VISITANTE
 # SE A DIV NÃO ESTIVER VAZIA, O ELEMENTO É SALVO EM UM DICIONÁRIO E SALVA O DICIONÁRIO EM UMA LISTA PARA QUE POSSAMOS PEGAR OS DEMAIS VALORES
         dados.clear()
@@ -48,17 +48,21 @@ with open('tabela' + str(tomorrows_date) + '.txt', 'r', encoding="utf-8") as arq
         for y in range(len(caracteres_a_remover)):
             data = data.replace(caracteres_a_remover[y], "")
 
-# ENVIA A TABELA DE JOGOS PELO WHATSAPP RESPEITANDO O LIMITE DE 1600 CARACTERES PERMITIDOS PELO TWILIO
+    # PERGUNTA SE DEVE ENVIAR A TABELA DE JOGOS PELO WHATSAPP RESPEITANDO O LIMITE DE 1600 CARACTERES PERMITIDOS PELO TWILIO
+    resposta = input('Deseja enviar horário dos jogos para o whatsapp?[S/N]')
+    if resposta in 'Ss':
+        account_sid = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+        auth_token = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+        client = Client(account_sid, auth_token)
 
-    account_sid = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-    auth_token = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-    client = Client(account_sid, auth_token)
+        message = client.messages.create(
+            from_='whatsapp:+xxxxxxxxx',
+            body=f'{str(data[:1599])}',
+            to='whatsapp:+xxxxxxxxxx'
+        )
 
-    message = client.messages.create(
-        from_='whatsapp:+xxxxxxxxx',
-        body=f'{str(data[:1599])}',
-        to='whatsapp:+xxxxxxxxxx'
-    )
-
-    print(message.sid)
+        print(message.sid)
+        print(data)
+    else:
+        print(data)
 
