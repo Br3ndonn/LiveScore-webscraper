@@ -48,7 +48,7 @@ with open('tabela' + str(tomorrows_date) + '.txt', 'r', encoding="utf-8") as arq
         for y in range(len(caracteres_a_remover)):
             data = data.replace(caracteres_a_remover[y], "")
 
-# PERGUNTA SE DEVE ENVIAR A TABELA DE JOGOS PELO WHATSAPP RESPEITANDO O LIMITE DE 1600 CARACTERES PERMITIDOS PELO TWILIO
+#PERGUNTA SE DEVE ENVIAR A TABELA DE JOGOS PELO WHATSAPP RESPEITANDO O LIMITE DE 1600 CARACTERES PERMITIDOS PELO TWILIO
 def envia_whatsapp():
     resposta = input('Deseja enviar horário dos jogos para o whatsapp?[S/N]')
     if resposta in 'Ss':
