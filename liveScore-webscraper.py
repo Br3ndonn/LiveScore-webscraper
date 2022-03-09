@@ -52,14 +52,14 @@ with open('tabela' + str(tomorrows_date) + '.txt', 'r', encoding="utf-8") as arq
 def envia_whatsapp():
     resposta = input('Deseja enviar horário dos jogos para o whatsapp?[S/N]')
     if resposta in 'Ss':
-        account_sid = 'AC0daa1640e798ba28bf434d752c7e5def'
-        auth_token = 'd85198fe320de94bec18efb220cec29c'
+        account_sid = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+        auth_token = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
         client = Client(account_sid, auth_token)
 
         message = client.messages.create(
-            from_='whatsapp:+14155238886',
+            from_='whatsapp:+xxxxxxxxxxx',
             body=f'{str(data[:1599])}',
-            to='whatsapp:+559884534294'
+            to='whatsapp:+xxxxxxxxxx'
         )
 
         print(message.sid)
