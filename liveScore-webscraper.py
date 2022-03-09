@@ -2,6 +2,7 @@ import datetime
 from bs4 import BeautifulSoup
 import requests
 from twilio.rest import Client
+import os
 
 dados = dict()
 lista = list()
@@ -16,7 +17,6 @@ site = requests.get(next_day_url)
 soup = BeautifulSoup(site.content, 'html.parser')
 
 # PERCORRE O CÓDIGO HTML EM BUSCA DOS ELEMENTOS DESEJADOS
-
 for div in soup.find(class_='MatchRows_root__1NKae'):
     for jogos in div.find_all('div'):
 # PERCORRE AS DIV COLETANDO OS HORÁRIOS, MANDANTE DO JOGO E TIME VISITANTE
@@ -64,8 +64,15 @@ def envia_whatsapp():
 
         print(message.sid)
         print(data)
+        deleta_arquivo_txt()
     else:
         print(data)
+        deleta_arquivo_text()
 
+# DELETA O ARQUIVO .TXT DEPOIS QUE NÃO É MAIS NECESSÁRIO        
+def deleta_arquivo_txt():
+    nome_arquivo = 'tabela' + str(tomorrows_date) + '.txt'
+    if os.path.exists(nome_arquivo):
+        os.remove(nome_arquivo)
 
 envia_whatsapp()
