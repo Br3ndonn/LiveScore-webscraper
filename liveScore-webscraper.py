@@ -35,7 +35,7 @@ def envia_whatsapp():
         deleta_arquivo_txt()
     else:
         print(arquivo_txt)
-        deleta_arquivo_text()
+        deleta_arquivo_txt()
         
         
 # PEGA A DATA DESEJADA(HOJE OU AMANHÃ) E CONCATENA COM A URL DO SITE
