@@ -1,4 +1,4 @@
-import datetime
+from datetime import date, timedelta
 from bs4 import BeautifulSoup
 import requests
 from twilio.rest import Client
@@ -7,14 +7,17 @@ import os
 dados_partidas = dict()
 lista_de_partidas = list()
 
-def deleta_arquivo_txt():
-    """Deleta o arquivo .txt gerado após lista de jogos ser exibida ao usuário"""
+
+def pega_url_com_data():
+    """Pega a data desejada e concatena com a URL"""
     
-    nome_arquivo = 'tabela' + str(tomorrows_date) + '.txt'
-    if os.path.exists(nome_arquivo):
-        os.remove(nome_arquivo)
-        
-        
+    tomorrows_date = date.today() + timedelta(days=1)
+    # today = "http://www.livescores.com/football/" + str(date.today()) + "/?tz=-3"
+    next_day_url = "http://www.livescores.com/football/" + str(tomorrows_date) + "/?tz=-3"
+    
+    return next_day_url
+
+
 def envia_whatsapp():
     """Envia a tabela de jogos pelo whatsapp se o usário desejar"""
     
@@ -26,26 +29,47 @@ def envia_whatsapp():
 
         message = client.messages.create(
             from_='whatsapp:+xxxxxxxxxxx',
-            body=f'{str(arquivo_txt[:1599])}',
+            body=f'{str(cria_arquivo_txt()[:1599])}',
             to='whatsapp:+xxxxxxxxxx'
         )
 
         print(message.sid)
-        print(arquivo_txt)
+        print(cria_arquivo_txt())
         deleta_arquivo_txt()
     else:
-        print(arquivo_txt)
+        print(cria_arquivo_txt())
         deleta_arquivo_txt()
+
+
+def cria_arquivo_txt():
+    with open('tabela' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'w', encoding="utf-8") as arquivo:
+        for valor in lista_de_partidas:
+            if bool(valor):
+                arquivo.write(str(valor.values()) + '\n')
+
+    with open('tabela' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'r', encoding="utf-8") as arquivo2:
+        arquivo_txt = arquivo2.read()
+        caracteres_a_remover = ['dict_values([', '])']
+
+        for x in range(len(arquivo_txt)):
+            for y in range(len(caracteres_a_remover)):
+                arquivo_txt = arquivo_txt.replace(caracteres_a_remover[y], "")
+                
+    return arquivo_txt
+
+
+def deleta_arquivo_txt():
+    """Deleta o arquivo .txt gerado após lista de jogos ser exibida ao usuário"""
+    
+    nome_arquivo = 'tabela' + str(f'{date.today() + timedelta(days=1)}'e) + '.txt'
+    if os.path.exists(nome_arquivo):
+        os.remove(nome_arquivo)
         
-        
-# PEGA A DATA DESEJADA(HOJE OU AMANHÃ) E CONCATENA COM A URL DO SITE
-tomorrows_date = datetime.date.today() + datetime.timedelta(days=1)
-today = "http://www.livescores.com/football/" + str(datetime.date.today()) + "/?tz=-3"
-next_day_url = "http://www.livescores.com/football/" + str(tomorrows_date) + "/?tz=-3"
 
 # REQUEST DO SITE
-live_score = requests.get(next_day_url)
-soup = BeautifulSoup(live_score.content, 'html.parser')
+r = requests.get(next_day_url)
+soup = BeautifulSoup(r.content, 'html.parser')
+
 
 # PERCORRE O CÓDIGO HTML EM BUSCA DOS ELEMENTOS DESEJADOS
 for div in soup.find(class_='MatchRows_root__1NKae'):
@@ -64,19 +88,6 @@ for div in soup.find(class_='MatchRows_root__1NKae'):
         lista_de_partidas.append(dados_partidas.copy())
 
 # SALVA A LISTA DE DICIONÁRIOS COMO STR EM UM ARQUIVO .txt SE O DICIONÁRIO NÃO ESTIVER VAZIO
-with open('tabela' + str(tomorrows_date) + '.txt', 'w', encoding="utf-8") as arquivo:
-    for valor in lista_de_partidas:
-        if bool(valor):
-            arquivo.write(str(valor.values())+'\n')
 
-# ABRE O ARQUIVO .txt E REMOVE OS CARACTERES EXCEDENTES PARA FICAR NO LIMITE DE 1600 CARACTERES DO TWILIO
-with open('tabela' + str(tomorrows_date) + '.txt', 'r', encoding="utf-8") as arquivo2:
-    arquivo_txt = arquivo2.read()
-    # LISTA DE CARACTERES A SEREM REMOVIDOS
-    caracteres_a_remover = ['dict_values([', '])']
-
-    for x in range(len(arquivo_txt)):
-        for y in range(len(caracteres_a_remover)):
-            arquivo_txt = arquivo_txt.replace(caracteres_a_remover[y], "")
 
 envia_whatsapp()
