@@ -61,13 +61,13 @@ def cria_arquivo_txt():
 def deleta_arquivo_txt():
     """Deleta o arquivo .txt gerado após lista de jogos ser exibida ao usuário"""
     
-    nome_arquivo = 'tabela' + str(f'{date.today() + timedelta(days=1)}'e) + '.txt'
+    nome_arquivo = 'tabela' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
     if os.path.exists(nome_arquivo):
         os.remove(nome_arquivo)
         
 
 # REQUEST DO SITE
-r = requests.get(next_day_url)
+r = requests.get(pega_url_com_data())
 soup = BeautifulSoup(r.content, 'html.parser')
 
 
