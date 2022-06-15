@@ -39,7 +39,7 @@ def create_file_txt():
     with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'w', encoding="utf-8") as file:
         for value in scraper():
             schedule, home_team, away_team = value.values()
-            file.write(f'{schedule}: {home_team} x {away_team}' + '\n')
+            file.write(f'{schedule} {home_team} x {away_team}' + '\n')
 
     with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'r', encoding="utf-8") as file2:
         file_txt = file2.read()
