@@ -1,2 +1,2 @@
 # LiveScore-webscraper
-Webscraping do site de futebol LiveScore que monta uma tabela com todos os jogos de futebol do dia seguinte e envia para o seu whatsapp utilizando a biblioteca Twilio.
+Webscraping of the football site LiveScore that assembles a table with all the football games of the next day and sends it to your whatsapp using the Twilio library.
