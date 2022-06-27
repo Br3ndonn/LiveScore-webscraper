@@ -61,8 +61,8 @@ def get_url_with_date():
 def send_whatsapp():
     """Send the matchs list through whatsapp"""
 
-    account_sid = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
-    auth_token = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'
+    account_sid = ''
+    auth_token = ''
     client = Client(account_sid, auth_token)
 
     message = client.messages.create(
