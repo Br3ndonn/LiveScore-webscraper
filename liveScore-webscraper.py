@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 from datetime import date, timedelta
 import requests
 from bs4 import BeautifulSoup
@@ -136,6 +137,7 @@ def scraper():
             
             if bool(matchs_data):
                 matchs_list.append(matchs_data.copy())
-
+    
+    return matchs_list
 
 menu()
