@@ -120,20 +120,20 @@ def scraper():
     r = requests.get(get_url_with_date())
     soup = BeautifulSoup(r.content, 'html.parser')
 
-    for div in soup.find(class_='J'):
+    for div in soup.find(class_='K'):
         for matchs in div.find_all('div'):
             matchs_data.clear()
-            if matchs.find(class_='eb') is not None:
-                matchs_data['league'] = matchs.find('span', class_='hb').get_text()
+            if matchs.find(class_='wb') is not None:
+                matchs_data['league'] = matchs.find('span', class_='Ab').get_text()
 
-            if matchs.find(class_='Gh') is not None:
-                matchs_data['schedule'] = matchs.find('span', class_='ug qg').get_text()
+            if matchs.find(class_='ai') is not None:
+                matchs_data['schedule'] = matchs.find('span', class_='lg hg').get_text()
 
-            if matchs.find(class_='Gh') is not None:
-                matchs_data['home_team'] = matchs.find(class_='Nh').get_text()
+            if matchs.find(class_='ai') is not None:
+                matchs_data['home_team'] = matchs.find(class_='hi').get_text()
 
-            if matchs.find(class_='Gh') is not None:
-                matchs_data['away_team'] = matchs.find(class_='Mh').get_text()
+            if matchs.find(class_='ai') is not None:
+                matchs_data['away_team'] = matchs.find(class_='gi').get_text()
             
             if bool(matchs_data):
                 matchs_list.append(matchs_data.copy())
