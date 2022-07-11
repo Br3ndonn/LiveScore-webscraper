@@ -1,9 +1,10 @@
 #!/usr/bin/python3
+import os
 from datetime import date, timedelta
 import requests
 from bs4 import BeautifulSoup
 from twilio.rest import Client
-import os
+
 
 matchs_data = {}
 matchs_list = []
