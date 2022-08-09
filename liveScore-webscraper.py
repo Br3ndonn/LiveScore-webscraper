@@ -4,11 +4,10 @@ from datetime import date, timedelta
 import requests
 from bs4 import BeautifulSoup
 from twilio.rest import Client
-
+import twilio
 
 matchs_data = {}
 matchs_list = []
-
 
 def menu():
     """Menu with user's options."""
@@ -61,18 +60,16 @@ def get_url_with_date():
 
 def send_whatsapp():
     """Send the matchs list through whatsapp"""
+    import creds #File with numbers used and Twilio keys
 
-    account_sid = ''
-    auth_token = ''
-    client = Client(account_sid, auth_token)
+    client = Client(creds.account_sid, creds.auth_token)
 
     message = client.messages.create(
-        from_='whatsapp:+XXXXXXXXXXXX',
+        from_=creds.my_whatsapp_number,
         body=f'{str(create_file_txt()[:1599])}',
-        to='whatsapp:+XXXXXXXXXXXX'
+        to=creds.twilio_whatsapp_number
     )
 
-    print(message.sid)
     print(create_file_txt())
 
 
@@ -88,7 +85,9 @@ def specific_team_search():
     """Search for a specific team."""
 
     teams = []
-    create_file_txt()
+    file_name = 'matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
+    if os.path.exists(file_name) is False:
+        create_file_txt
 
     while True:
         teams.append(input(f'Add team: ').capitalize())
@@ -107,7 +106,10 @@ def specific_team_search():
 def search_by_match_hour():
     """Search for a specific hour of the day."""
 
-    create_file_txt()
+    file_name = 'matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
+    if os.path.exists(file_name) is False:
+        create_file_txt
+
     hour = input('Hour: ')
     with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'r', encoding="utf-8") as file:
         for line in file:
