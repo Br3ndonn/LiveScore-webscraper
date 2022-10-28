@@ -1,0 +1,8 @@
+venv/
+.idea/ 
+teste.py
+teste2.py
+matchs2022-08-03.txt
+jogos.txt
+creds.py
+main.py

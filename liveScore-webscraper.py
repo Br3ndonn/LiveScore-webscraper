@@ -9,6 +9,7 @@ import twilio
 matchs_data = {}
 matchs_list = []
 
+
 def menu():
     """Menu with user's options."""
 
@@ -60,7 +61,7 @@ def get_url_with_date():
 
 def send_whatsapp():
     """Send the matchs list through whatsapp"""
-    import creds #File with numbers used and Twilio keys
+    import creds  # File with numbers used and Twilio keys
 
     client = Client(creds.account_sid, creds.auth_token)
 
@@ -87,7 +88,7 @@ def specific_team_search():
     teams = []
     file_name = 'matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
     if os.path.exists(file_name) is False:
-        create_file_txt
+        create_file_txt()
 
     while True:
         teams.append(input(f'Add team: ').capitalize())
@@ -108,7 +109,7 @@ def search_by_match_hour():
 
     file_name = 'matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
     if os.path.exists(file_name) is False:
-        create_file_txt
+        create_file_txt()
 
     hour = input('Hour: ')
     with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'r', encoding="utf-8") as file:
@@ -123,24 +124,25 @@ def scraper():
     r = requests.get(get_url_with_date())
     soup = BeautifulSoup(r.content, 'html.parser')
 
-    for div in soup.find(class_='Pa'):
+    for div in soup.find(class_='Ja'):
         for matchs in div.find_all('div'):
             matchs_data.clear()
-            if matchs.find(class_='xb') is not None:
-                matchs_data['league'] = matchs.find('span', class_='Ab').get_text()
+            if matchs.find(class_='oe') is not None:
+                matchs_data['league'] = matchs.find('span', class_='Bb').get_text()
 
-            if matchs.find(class_='cg') is not None:
-                matchs_data['schedule'] = matchs.find('span', class_='hg dg').get_text()
+            if matchs.find(class_='bg') is not None:
+                matchs_data['schedule'] = matchs.find('span', class_='gg cg').get_text()
 
-            if matchs.find(class_='Lh') is not None:
-                matchs_data['home_team'] = matchs.find('span', class_='Mh').get_text()
+            if matchs.find(class_='gh') is not None:
+                matchs_data['home_team'] = matchs.find('span', class_='hh').get_text()
 
-            if matchs.find(class_='Lh') is not None:
-                matchs_data['away_team'] = matchs.find('span', class_='Nh').get_text()
+            if matchs.find(class_='gh') is not None:
+                matchs_data['away_team'] = matchs.find('span', class_='ih').get_text()
             
             if bool(matchs_data):
                 matchs_list.append(matchs_data.copy())
     
     return matchs_list
+
 
 menu()
