@@ -130,8 +130,8 @@ def scraper():
             if matchs.find(class_='oe') is not None:
                 matchs_data['league'] = matchs.find('span', class_='Bb').get_text()
 
-            if matchs.find(class_='bg') is not None:
-                matchs_data['schedule'] = matchs.find('span', class_='gg cg').get_text()
+            if matchs.find(class_='kg') is not None:
+                matchs_data['schedule'] = matchs.find('span', class_='pg lg').get_text()
 
             if matchs.find(class_='gh') is not None:
                 matchs_data['home_team'] = matchs.find('span', class_='hh').get_text()
