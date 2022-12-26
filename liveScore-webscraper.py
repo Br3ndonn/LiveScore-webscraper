@@ -41,6 +41,8 @@ def create_file_txt():
     with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'w', encoding="utf-8") as file:
         for value in scraper():
             schedule, home_team, away_team = value.values()
+            #home_team, away_team = value.values()
+            #file.write(f'{home_team} x {away_team}' + '\n')
             file.write(f'{schedule} {home_team} x {away_team}' + '\n')
 
     with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'r', encoding="utf-8") as file2:
@@ -124,20 +126,20 @@ def scraper():
     r = requests.get(get_url_with_date())
     soup = BeautifulSoup(r.content, 'html.parser')
 
-    for div in soup.find(class_='Ja'):
+    for div in soup.find(class_='xb'):
         for matchs in div.find_all('div'):
             matchs_data.clear()
-            if matchs.find(class_='oe') is not None:
-                matchs_data['league'] = matchs.find('span', class_='Bb').get_text()
+            if matchs.find(class_='pb') is not None:
+                matchs_data['league'] = matchs.find('span', class_='tb').get_text()
 
-            if matchs.find(class_='kg') is not None:
-                matchs_data['schedule'] = matchs.find('span', class_='pg lg').get_text()
+            if matchs.find(class_='Kg') is not None:
+                matchs_data['schedule'] = matchs.find('span', class_='Pg Lg').get_text()
 
-            if matchs.find(class_='gh') is not None:
-                matchs_data['home_team'] = matchs.find('span', class_='hh').get_text()
+            if matchs.find(class_='bh') is not None:
+                matchs_data['home_team'] = matchs.find('span', class_='ch').get_text()
 
-            if matchs.find(class_='gh') is not None:
-                matchs_data['away_team'] = matchs.find('span', class_='ih').get_text()
+            if matchs.find(class_='bh') is not None:
+                matchs_data['away_team'] = matchs.find('span', class_='dh').get_text()
             
             if bool(matchs_data):
                 matchs_list.append(matchs_data.copy())
