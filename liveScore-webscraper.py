@@ -17,7 +17,8 @@ def menu():
                          '\n2. Send Whatsapp message'
                          '\n3. Look for specifics TEAM'
                          '\n4. Look for Specific HOUR'
-                         '\n5. Delete .txt file'))
+                         '\n5. Delete .txt file'
+                         '\nOpção: '))
 
     if answer == 1:
         print(create_file_txt())
@@ -41,8 +42,6 @@ def create_file_txt():
     with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'w', encoding="utf-8") as file:
         for value in scraper():
             schedule, home_team, away_team = value.values()
-            #home_team, away_team = value.values()
-            #file.write(f'{home_team} x {away_team}' + '\n')
             file.write(f'{schedule} {home_team} x {away_team}' + '\n')
 
     with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'r', encoding="utf-8") as file2:
@@ -89,16 +88,17 @@ def specific_team_search():
 
     teams = []
     file_name = 'matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
-    if os.path.exists(file_name) is False:
+    if os.path.exists(file_name) is False: #checks if the file was already created
         create_file_txt()
 
     while True:
         teams.append(input(f'Add team: ').capitalize())
-        # Press Enter when don't want add another time. Making the last element empty
+        # Press Enter when don't want add another team. Making the last element empty.
         if teams[len(teams) - 1] == '':
             # Remove the last element.
             teams.pop()
             break
+    
     with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'r', encoding="utf-8") as file:
         for line in file:
             for team in teams:
@@ -126,20 +126,20 @@ def scraper():
     r = requests.get(get_url_with_date())
     soup = BeautifulSoup(r.content, 'html.parser')
 
-    for div in soup.find(class_='xb'):
+    for div in soup.find(class_='qb'):
         for matchs in div.find_all('div'):
             matchs_data.clear()
             if matchs.find(class_='pb') is not None:
-                matchs_data['league'] = matchs.find('span', class_='tb').get_text()
+                matchs_data['league'] = matchs.find('span', class_='tb').get_text() #never managed to get the league's name
 
-            if matchs.find(class_='Kg') is not None:
-                matchs_data['schedule'] = matchs.find('span', class_='Pg Lg').get_text()
+            if matchs.find(class_='fg') is not None:
+                matchs_data['schedule'] = matchs.find('span', class_='kg gg').get_text()
 
-            if matchs.find(class_='bh') is not None:
-                matchs_data['home_team'] = matchs.find('span', class_='ch').get_text()
+            if matchs.find(class_='mi') is not None:
+                matchs_data['home_team'] = matchs.find('span', class_='mi').get_text()
 
-            if matchs.find(class_='bh') is not None:
-                matchs_data['away_team'] = matchs.find('span', class_='dh').get_text()
+            if matchs.find(class_='ni') is not None:
+                matchs_data['away_team'] = matchs.find('span', class_='ni').get_text()
             
             if bool(matchs_data):
                 matchs_list.append(matchs_data.copy())
