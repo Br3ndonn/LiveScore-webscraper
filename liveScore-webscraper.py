@@ -126,20 +126,20 @@ def scraper():
     r = requests.get(get_url_with_date())
     soup = BeautifulSoup(r.content, 'html.parser')
 
-    for div in soup.find(class_='Ia'):
+    for div in soup.find(class_='cb'):
         for matchs in div.find_all('div'):
             matchs_data.clear()
             if matchs.find(class_='qb') is not None:
                 matchs_data['league'] = matchs.find('span', class_='ub').get_text() #never managed to get the league's name
 
-            if matchs.find(class_='Bg') is not None:
-                matchs_data['schedule'] = matchs.find('span', class_='Gg Cg').get_text()
+            if matchs.find(class_='Eg') is not None:
+                matchs_data['schedule'] = matchs.find('span', class_='Jg Fg').get_text()
 
-            if matchs.find(class_='Qh') is not None:
-                matchs_data['home_team'] = matchs.find('span', class_='Sh').get_text()
+            if matchs.find(class_='oj') is not None:
+                matchs_data['home_team'] = matchs.find('span', class_='rj').get_text()
 
-            if matchs.find(class_='Rh') is not None:
-                matchs_data['away_team'] = matchs.find('span', class_='Sh').get_text()
+            if matchs.find(class_='oj') is not None:
+                matchs_data['away_team'] = matchs.find('span', class_='qj').get_text()
             
             if bool(matchs_data):
                 matchs_list.append(matchs_data.copy())
