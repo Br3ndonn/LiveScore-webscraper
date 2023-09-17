@@ -18,7 +18,7 @@ def menu():
                          '\n3. Look for specifics TEAM'
                          '\n4. Look for Specific HOUR'
                          '\n5. Delete .txt file'
-                         '\nOpção: '))
+                         '\nOption: '))
 
     if answer == 1:
         print(create_file_txt())
@@ -88,7 +88,7 @@ def specific_team_search():
 
     teams = []
     file_name = 'matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
-    if os.path.exists(file_name) is False: #checks if the file was already created
+    if os.path.exists(file_name) is False:  # checks if the file was already created
         create_file_txt()
 
     while True:
@@ -126,11 +126,11 @@ def scraper():
     r = requests.get(get_url_with_date())
     soup = BeautifulSoup(r.content, 'html.parser')
 
-    for div in soup.find(class_='cb'):
+    for div in soup.find(class_='ca'):
         for matchs in div.find_all('div'):
             matchs_data.clear()
-            if matchs.find(class_='qb') is not None:
-                matchs_data['league'] = matchs.find('span', class_='ub').get_text() #never managed to get the league's name
+            if matchs.find(class_='yb') is not None:
+                matchs_data['league'] = matchs.find('span', class_='Cb').get_text()  # cant managed to get the league's name
 
             if matchs.find(class_='Eg') is not None:
                 matchs_data['schedule'] = matchs.find('span', class_='Jg Fg').get_text()
