@@ -3,43 +3,44 @@ import os
 from datetime import date, timedelta
 import requests
 from bs4 import BeautifulSoup
-from twilio.rest import Client
-import twilio
+#from twilio.rest import Client
+#import twilio
 
-matchs_data = {}
-matchs_list = []
+matches_data = {}
+matches_list = []
 
 
 def menu():
     """Menu with user's options."""
+    answer = 0
+    while answer != 1 and answer != 2 and answer != 3 and answer != 4 and answer != 5:
+        answer = int(input('1. See matchs only'
+                             '\n2. Send Whatsapp message'
+                             '\n3. Look for specifics TEAM'
+                             '\n4. Look for Specific HOUR'
+                             '\n5. Delete .txt file'
+                             '\nOption: '))
 
-    answer = int(input('1. See matchs only'
-                         '\n2. Send Whatsapp message'
-                         '\n3. Look for specifics TEAM'
-                         '\n4. Look for Specific HOUR'
-                         '\n5. Delete .txt file'
-                         '\nOption: '))
-
-    if answer == 1:
-        print(create_file_txt())
-        menu()
-    if answer == 2:
-        send_whatsapp()
-        menu()
-    if answer == 3:
-        specific_team_search()
-        menu()
-    if answer == 4:
-        search_by_match_hour()
-        menu()
-    if answer == 5:
-        delete_txt_file()
+        if answer == 1:
+            print(create_file_txt())
+            menu()
+        if answer == 2:
+            send_whatsapp()
+            menu()
+        if answer == 3:
+            specific_team_search()
+            menu()
+        if answer == 4:
+            search_by_match_hour()
+            menu()
+        if answer == 5:
+            delete_txt_file()
 
 
 def create_file_txt():
     """Create .txt file"""
-
-    with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'w', encoding="utf-8") as file:
+    file_name = 'matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
+    with open(file_name, 'w', encoding="utf-8") as file:
         for value in scraper():
             schedule, home_team, away_team = value.values()
             file.write(f'{schedule} {home_team} x {away_team}' + '\n')
@@ -87,8 +88,8 @@ def specific_team_search():
     """Search for a specific team."""
 
     teams = []
-    file_name = 'matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
-    if os.path.exists(file_name) is False:  # checks if the file was already created
+    file_txt = 'matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
+    if os.path.exists(file_txt) is False:  # checks if the file was already created
         create_file_txt()
 
     while True:
@@ -98,23 +99,33 @@ def specific_team_search():
             # Remove the last element.
             teams.pop()
             break
-    
-    with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'r', encoding="utf-8") as file:
+
+    with open(file_txt, 'r', encoding="utf-8") as file:
         for line in file:
             for team in teams:
                 if team in line:
                     print(line)
 
 
+def file_exists(file_name):
+    """Check if the file exists"""
+
+    # file_name = 'matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
+    if os.path.exists(file_name) is False:
+        return False
+
+    return True
+
+
 def search_by_match_hour():
     """Search for a specific hour of the day."""
 
     file_name = 'matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt'
-    if os.path.exists(file_name) is False:
+    if file_exists(file_name) is False:
         create_file_txt()
 
     hour = input('Hour: ')
-    with open('matchs' + str(f'{date.today() + timedelta(days=1)}') + '.txt', 'r', encoding="utf-8") as file:
+    with open(file_name, 'r', encoding="utf-8") as file:
         for line in file:
             if f'{hour}:' in line:
                 print(line)
@@ -126,25 +137,25 @@ def scraper():
     r = requests.get(get_url_with_date())
     soup = BeautifulSoup(r.content, 'html.parser')
 
-    for div in soup.find(class_='ca'):
-        for matchs in div.find_all('div'):
-            matchs_data.clear()
-            if matchs.find(class_='yb') is not None:
-                matchs_data['league'] = matchs.find('span', class_='Cb').get_text()  # cant managed to get the league's name
+    for div in soup.find(class_='Aa'):
+        for matches in div.find_all('div'):
+            matches_data.clear()
+            if matches.find(class_='Wa') is not None:
+                matches_data['league'] = matches.find('span', class_='ab').get_text()  # can't managed to get the league's name
 
-            if matchs.find(class_='Eg') is not None:
-                matchs_data['schedule'] = matchs.find('span', class_='Jg Fg').get_text()
+            if matches.find(class_='ng') is not None:
+                matches_data['schedule'] = matches.find('span', class_='sg og').get_text()
 
-            if matchs.find(class_='oj') is not None:
-                matchs_data['home_team'] = matchs.find('span', class_='rj').get_text()
+            if matches.find(class_='Xh') is not None:
+                matches_data['home_team'] = matches.find('span', class_='Xh').get_text()
 
-            if matchs.find(class_='oj') is not None:
-                matchs_data['away_team'] = matchs.find('span', class_='qj').get_text()
+            if matches.find(class_='Zh') is not None:
+                matches_data['away_team'] = matches.find('span', class_='Yh').get_text()
             
-            if bool(matchs_data):
-                matchs_list.append(matchs_data.copy())
+            if bool(matches_data):
+                matches_list.append(matches_data.copy())
     
-    return matchs_list
+    return matches_list
 
 
 menu()
