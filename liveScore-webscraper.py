@@ -3,8 +3,8 @@ import os
 from datetime import date, timedelta
 import requests
 from bs4 import BeautifulSoup
-from twilio.rest import Client
-# import twilio
+# from twilio.rest import Client
+#import twilio
 
 matches_data = {}
 matches_list = []
@@ -138,7 +138,7 @@ def scraper():
     r = requests.get(get_url_with_date())
     soup = BeautifulSoup(r.content, 'html.parser')
 
-    for div in soup.find(class_='Aa'):
+    for div in soup.find(class_='Ca'):
         for matches in div.find_all('div'):
             matches_data.clear()
             if matches.find(class_='Wa') is not None:
@@ -146,15 +146,15 @@ def scraper():
                     'span', class_='ab').get_text(
                     )  # can't managed to get the league's name
 
-            if matches.find(class_='ng') is not None:
+            if matches.find(class_='og') is not None:
                 matches_data['schedule'] = matches.find(
-                    'span', class_='sg og').get_text()
+                    'span', class_='tg pg').get_text()
 
-            if matches.find(class_='Xh') is not None:
+            if matches.find(class_='Wh') is not None:
                 matches_data['home_team'] = matches.find(
-                    'span', class_='Xh').get_text()
+                    'span', class_='Zh').get_text()
 
-            if matches.find(class_='Zh') is not None:
+            if matches.find(class_='Wh') is not None:
                 matches_data['away_team'] = matches.find(
                     'span', class_='Yh').get_text()
 
